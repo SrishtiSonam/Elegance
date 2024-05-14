@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Scheduling Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" type="text/javascript"></script>
+    <!-- <script type="text/javascript"> </script> -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <!-- <script src="script.js"></script> -->
+</head>
+<body>
+        <h1 class="heading">
+            CPU Scheduling Simulator
+        </h1>
+    <div style="margin-left: 50px">
+       <h2> Output: </h2>
+       <h5> 1. waiting time for all process and total average waiting time </h5>
+        
+       <h5> 2. Turn around time for all process and total average turn around time </h5>
+        
+       <h5> 3. completed time for all process </h5>
+
+       <h5> 4. Throughput of processes</h5>
+        
+       <h5> 5. gantt-chart of processes</h5>
+       
+       <h5> 6. timeline-chart of processes</h5>
+<hr>
+    </div>
+    <div class="container">
+        
+        <div class="row mb-5 pt-3" id="main">
+            <div class="col-9 process-list-container">
+                <table class="table table-bordered" id="tblProcessList">
+                    <thead>
+                        <tr>
+                            
+                            <th scope="col">Process ID</th>
+                            <th scope="col">Arrival Time</th>
+                            <th scope="col">Burst Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col">
+                        <input class="form-control mb-2" type="number" min="0" id="processID" placeholder="Process ID" required>
+                    </div>
+                    <div class="col">
+                        <input class="form-control mb-2" type="number" min="0" id="arrivalTime" placeholder="Arrival Time">
+                    </div>
+                    <div class="col">
+                        <input class="form-control mb-2" type="number" min="0" id="burstTime" placeholder="Burst Time">
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary" id="btnAddProcess">Add Process</button>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 border border-primary p-3 mb-2">
+                <div class="form">
+                    <div class="form-group">
+                        <label for="algorithmSelector">Select Scheduling Method</label>
+                        <select class="form-control" id="algorithmSelector">
+                            <option value="optFCFS">First Come First Served</option>
+                            <option value="optSJF">Shortest Job First</option>
+                            <option value="optSRTF">Shortest Remaining Time First</option>
+                            <option value="optRR">Round Robin</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-group-time-quantum">
+                        <label class="mt-1  ">Time Quantum :</label>
+                        <input class="form-control mb-2" type="number" min="0" max="9" id="timeQuantum" >
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" id="btnCalculate">Calculate</button>
+                        
+                        <button class="btn btn-primary" onclick="refresh()" >reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-primary">
+            <div class="col-md-9">
+                <table class="table table-bordered" id="tblResults">
+                    <thead>
+                        <tr>
+                            <th scope="col">Process ID</th>
+                            <th scope="col">Arrival Time</th>
+                            <th scope="col">Burst Time</th>
+                            <th scope="col">Completed Time</th>
+                            <th scope="col">Waiting Time</th>
+                            <th scope="col">Turnaround Time</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3 border border-primary p-3 mb-2">
+                <div class="form">
+                    <div class="form-group">
+                        <label for="avgTurnaroundTime">Average Turnaround Time</label>
+                        <input class="form-control" id="avgTurnaroundTime" type="number" placeholder="0" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="avgTurnaroundTime">Average Waiting Time</label>
+                        <input class="form-control" id="avgWaitingTime" type="number" placeholder="0" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="avgTurnaroundTime">Throughput</label>
+                        <input class="form-control" id="throughput" type="number" placeholder="0" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br> <br><br> <br>  <br>
+<h1 id="gantt-chart-heading"  >Gantt Chart</h1>
+<div id="gantt-chart"></div>  
+<h1 id="timeline-chart-heading"  >Timeline Chart</h1>
+<div id="example4.2" style="height: 200px;"></div>
+    <footer class="page-footer bg-dark p-2 mt-5">     
+        <div class="footer-copyright text-center py-3">
+           <span style="color :white">
+               
+           </span>
+        </div>
+    
+    </footer>
+    
+</body>
+</html>

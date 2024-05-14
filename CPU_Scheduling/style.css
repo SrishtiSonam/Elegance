@@ -1,0 +1,28 @@
+/* .buttonAlgo{
+    border-radius: 15px !important; 
+    width: 70px;
+} */
+
+#timeQuantum{
+  width: 80px;
+}
+.heading{
+  text-align: center;
+  color: blue;
+  border : 2px solid blue;
+  background: aliceblue;
+  margin-bottom: 30px;
+}
+#gantt-chart-heading{
+  text-align: center; display: none;
+  color:black;
+
+}
+#timeline-chart-heading{
+  text-align: center; display: none;
+  color:black;
+}
+#gantt-chart{
+  margin-left: 20px;
+   margin-right: 25px;
+}
