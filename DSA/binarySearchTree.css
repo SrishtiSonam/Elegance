@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;300&display=swap");
+
+body {
+  background-color: rgb(49, 55, 58);
+  color: aliceblue;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+}
+
+h1 {
+  text-align: center;
+  color: blue;
+  border : 2px solid blue;
+  background: aliceblue;
+  margin: 1rem 10vw;
+  padding: 1rem;
+}
+
+#board {
+  color: aliceblue;
+  width: 90vw;
+  margin: 1rem;
+  margin-top: 5rem;
+  padding: 1rem;
+  left: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-evenly;
+  -webkit-box-orient:horizontal ;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.boardSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+}
+
+input {
+  margin: 10px;
+  background-color: #202124;
+  color: #bbb;
+  padding: 10px;
+  border: 1px #bbb solid;
+  border-radius: 8px;
+}
+
+canvas {
+  height: 85vh;
+  width: 90vw;
+  padding: 1rem;
+  margin: 2rem;
+  border: 1px #bbb solid;
+}
+
+
