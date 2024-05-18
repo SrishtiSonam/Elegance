@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="binarySearchTree.css" />
+    <title> Binary Search Tree </title>
+  </head>
+  <body>
+    <h1> Binary Search Tree </h1>
+    <div id="BST">
+      <section id="board">
+        <div class="boardSection">
+          <label> Enter no. of nodes: </label>
+          <input type="number" id="size" onchange="random()" value="10" />
+        </div>
+        <input type="button" class="boardSection" value="New Tree" onclick="random()" />
+        <div class="boardSection"> 
+          <label>Enter the number to find: </label>
+          <input type="number" id="findingNumber" value="10" onchange="start()" />
+        </div>
+        <input type="button" class="boardSection" value="Restart" onclick="start()" />
+      </section>
+      <canvas height="700" width="700"></canvas>
+    </div>
+    <script src="binarySearchTree.js"></script>
+  </body>
+</html>
