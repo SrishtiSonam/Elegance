@@ -1,8 +1,31 @@
-/* .buttonAlgo{
-    border-radius: 15px !important; 
-    width: 70px;
-} */
-
+body {
+  background-color: rgb(49, 55, 58);
+  color: aliceblue;
+}
+h1 {
+  color: aliceblue;
+}
+table th{
+  color: aliceblue;
+}
+table td{
+  color: aliceblue;
+}
+footer {
+  font-weight: 700;
+  font-size: 1.5rem;
+  border : 2px solid blue;
+  border-radius: 0.5rem;
+  background: aliceblue;
+  padding: 1rem;
+  color: blue;
+}
+.chartDiv {
+  background-color: aliceblue;
+  margin: 1rem;
+  padding: 1rem;
+  margin-bottom: 4rem;
+}
 #timeQuantum{
   width: 80px;
 }
@@ -12,6 +35,7 @@
   border : 2px solid blue;
   background: aliceblue;
   margin-bottom: 30px;
+  padding: 1rem;
 }
 #gantt-chart-heading{
   text-align: center; display: none;

@@ -3,8 +3,6 @@ $(document).ready(
     function(){
 
         $(".form-group-time-quantum").hide();
-
-        // Show hide RR time quantum
         $('#algorithmSelector').on('change', function(){
             if(this.value === 'optRR') {
                 $(".form-group-time-quantum").show(1000);
@@ -13,14 +11,12 @@ $(document).ready(
             }
         });
 
-
         var processList = [];
 
         $('#btnAddProcess').on('click', function(){
             var processID = $('#processID');
             var arrivalTime = $('#arrivalTime');
             var burstTime = $('#burstTime');
-
             if(processID.val() === '' || arrivalTime.val() === '' || burstTime.val() === ''){
                 processID.addClass('is-invalid');
                 arrivalTime.addClass('is-invalid');
@@ -31,15 +27,12 @@ $(document).ready(
             processID.removeClass('is-invalid');
             arrivalTime.removeClass('is-invalid');
             burstTime.removeClass('is-invalid');
-
             var process = {
                 processID: parseInt(processID.val(), 10),
                 arrivalTime: parseInt(arrivalTime.val(), 10),
                 burstTime: parseInt(burstTime.val(), 10)
             }
-
             processList.push(process);
-            
             $('#tblProcessList > tbody:last-child').append(
                 `<tr>
                     <td id="tdProcessID">${processID.val()}</td>
@@ -47,39 +40,30 @@ $(document).ready(
                     <td id="tdBurstTime">${burstTime.val()}</td>
                 </tr>`
             );
-
             processID.val('');
             arrivalTime.val('');
             burstTime.val('');
         });
+
         $('#btnCalculate').on('click', function(){
-
             var table = document.getElementById("tblResults");
-
             while (table.rows.length > 1) {
-            table.deleteRow(1);
+                table.deleteRow(1);
             }
-
             if (processList.length == 0) {
                 alert('Please insert some processes');
                 return;
             }
-
-            
             var selectedAlgo = $('#algorithmSelector').children('option:selected').val();
-
             if (selectedAlgo === 'optFCFS') {
                 firstComeFirstServed();
             }
-
             if (selectedAlgo === 'optSJF') {
                 shortestJobFirst();
             }
-
             if (selectedAlgo === 'optSRTF') {
                 shortestRemainingTimeFirst();
             }
-
             if (selectedAlgo === 'optRR') {
                 roundRobin();
             }
@@ -91,13 +75,12 @@ $(document).ready(
         
         var completedList1 = [];
      
+        //-----------------------------
         function firstComeFirstServed(){
             completedList1= [];
-          //to sort the process accoring to arrival time
-          processList.sort(function (a, b) {
-            return a.arrivalTime - b.arrivalTime;
-          });
-              
+            processList.sort(function (a, b) {
+                return a.arrivalTime - b.arrivalTime;
+            });
             var time = 0;
             var queue = [];
             var completedList = [];
@@ -107,21 +90,17 @@ $(document).ready(
                     time++;
                     addToQueue();
                 }
-
                 // Dequeue from queue and run the process.
                 process = queue.shift();
-                var prevtime=time
-                time+=process.burstTime;
-
-                    completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+process.burstTime});
-
+                var prevtime = time
+                time += process.burstTime;
+                completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+process.burstTime});
                 addToQueue();  
                 process.completedTime = time;
                 process.turnAroundTime = process.completedTime - process.arrivalTime;
                 process.waitingTime = process.turnAroundTime - process.burstTime;
                 completedList.push(process);
             }
-
             function addToQueue() {
                 for(var i = 0; i < processList.length; i++) {
                     if(time >= processList[i].arrivalTime) {
@@ -135,7 +114,6 @@ $(document).ready(
                     }
                 }
             }
-
             // Bind table data
             $.each(completedList, function(key, process){
                 $('#tblResults > tbody:last-child').append(
@@ -149,12 +127,10 @@ $(document).ready(
                     </tr>`
                 );
             });
-
             // Get average
             var avgTurnaroundTime = 0;
             var avgWaitingTime = 0;
             var maxCompletedTime = 0;
-
             $.each(completedList, function(key, process){
                 if (process.completedTime > maxCompletedTime) {
                     maxCompletedTime = process.completedTime;
@@ -162,23 +138,19 @@ $(document).ready(
                 avgTurnaroundTime = avgTurnaroundTime + process.turnAroundTime;
                 avgWaitingTime = avgWaitingTime + process.waitingTime;
             });
-
             $('#avgTurnaroundTime').val( avgTurnaroundTime / completedList.length );
             $('#avgWaitingTime').val( avgWaitingTime / completedList.length );
             $('#throughput').val(completedList.length / maxCompletedTime);
-
             processList=completedList;
-            
-    // console.log(completedList1);
-    filldata();
+            filldata();
         }
-        function shortestJobFirst(){
 
+        // ------------------------
+        function shortestJobFirst(){
             completedList1= [];
             var completedList = [];
             var time = 0;
             var queue = [];
-
             while (processList.length>0 || queue.length>0) {
                 addToQueue();
                 while (queue.length==0) {                
@@ -197,9 +169,7 @@ $(document).ready(
                 process.completedTime = time;
                 process.turnAroundTime = process.completedTime - process.arrivalTime;
                 process.waitingTime = process.turnAroundTime - process.burstTime;
-
                 completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+process.burstTime});
-
                 completedList.push(process);
             }
             function addToQueue() {
@@ -229,7 +199,6 @@ $(document).ready(
                 var process = queue.shift();
                 return process;
             }
-
             // Bind table data
             $.each(completedList, function(key, process){
                 $('#tblResults > tbody:last-child').append(
@@ -243,21 +212,18 @@ $(document).ready(
                     </tr>`
                 );
             });
-
             // Get average
             var avgTurnaroundTime = 0;
             var avgWaitingTime = 0;
             var maxCompletedTime = 0;
             var throughput = 0;
-
-            $.each(completedList, function(key, process){
+            $.each(completedList, function(key, process) {
                 if (process.completedTime > maxCompletedTime) {
                     maxCompletedTime = process.completedTime;
                 }
                 avgTurnaroundTime = avgTurnaroundTime + process.turnAroundTime;
                 avgWaitingTime = avgWaitingTime + process.waitingTime;
             });
-
             $('#avgTurnaroundTime').val( avgTurnaroundTime / completedList.length );
             $('#avgWaitingTime').val( avgWaitingTime / completedList.length );
             $('#throughput').val(completedList.length / maxCompletedTime);
@@ -265,41 +231,31 @@ $(document).ready(
             filldata();
         }
 
+        // -----------------------------------
         function shortestRemainingTimeFirst() {
             completedList1= [];
             var completedList = [];
             var time = 0;
             var queue = [];
-            
             while ( processList.length>0 || queue.length>0 ) {
                 addToQueue();
                 while (queue.length==0) {                
                     time++;
                     addToQueue();
                 }
-             process = selectProcessForSRTF();
+                process = selectProcessForSRTF();
                 var prevtime = time;
-                // console.log(process);
-                // console.log(process.processID,process.burstTime);
-                if(process.burstTime<=1)
-                {
+                if(process.burstTime<=1) {
                     process.completedTime=++time;
                     completedList.push(process);
-                    
-                completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+process.burstTime});
-
-
-                }
-                else{
+                    completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+process.burstTime});
+                } else {
                     process.burstTime-=1;
                     time++;
                     queue.push(process);
                     completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+ 1});
-
                 }
-
             }
-
             function addToQueue() {
                 for(var i = 0; i < processList.length; i++) {
                     if(processList[i].arrivalTime <= time) {
@@ -334,7 +290,6 @@ $(document).ready(
                 time++;
                 addToQueue();
             }
-
             // Fetch table data
             var TableData = [];
             $('#tblProcessList tr').each(function(row, tr) {
@@ -344,10 +299,8 @@ $(document).ready(
                     "burstTime": parseInt($(tr).find('td:eq(2)').text())
                 }
             });
-
             // Remove header row
             TableData.splice(0, 1);
-            
             // Reset burst time
             TableData.forEach(pInTable => {
                 completedList.forEach(pInCompleted => {
@@ -358,7 +311,6 @@ $(document).ready(
                     }
                 });
             });
-
             // Bind table data
             $.each(completedList, function(key, process){
                 $('#tblResults > tbody:last-child').append(
@@ -372,13 +324,11 @@ $(document).ready(
                     </tr>`
                 );
             });
-
             // Get average
             var avgTurnaroundTime = 0;
             var avgWaitingTime = 0;
             var maxCompletedTime = 0;
             var throughput = 0;
-
             $.each(completedList, function(key, process){
                 if (process.completedTime > maxCompletedTime) {
                     maxCompletedTime = process.completedTime;
@@ -386,7 +336,6 @@ $(document).ready(
                 avgTurnaroundTime = avgTurnaroundTime + process.turnAroundTime;
                 avgWaitingTime = avgWaitingTime + process.waitingTime;
             });
-
             $('#avgTurnaroundTime').val( avgTurnaroundTime / completedList.length );
             $('#avgWaitingTime').val( avgWaitingTime / completedList.length );
             $('#throughput').val(completedList.length / maxCompletedTime);
@@ -394,9 +343,9 @@ $(document).ready(
             filldata();
         }
 
+        // -------------------
         function roundRobin() {
             completedList1= [];
-
             var timeQuantum = $('#timeQuantum');
             var timeQuantumVal= parseInt(timeQuantum.val(), 10);
             if(timeQuantum.val() ==''){
@@ -408,7 +357,6 @@ $(document).ready(
             var completedList = [];
             var time = 0;
             var queue = [];
-            
             while (processList.length > 0 || queue.length > 0) {
                 addToQueue();
                 while (queue.length == 0) {               
@@ -416,16 +364,13 @@ $(document).ready(
                     addToQueue();
                 }
                 var prevtime=time;
-            process = selectProcessForRR();
-               if(process.burstTime<=timeQuantumVal)
-               {
+                process = selectProcessForRR();
+                if(process.burstTime<=timeQuantumVal) {
                    time+=process.burstTime;
                    process.completedTime=time;
                    completedList.push(process);
                    completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+ process.burstTime});
-
-               }
-               else{
+                } else {
                    process.burstTime-=timeQuantumVal
                    time+=timeQuantumVal;
                    addToQueue();
@@ -433,7 +378,6 @@ $(document).ready(
                    completedList1.push({ id:process.processID ,start:prevtime,end:prevtime+timeQuantumVal});
                }
             }
-
             function addToQueue() {
                 for(var i = 0; i < processList.length; i++) {
                     if(processList[i].arrivalTime <= time) {
@@ -449,16 +393,11 @@ $(document).ready(
                 }
             }
             function selectProcessForRR() {
-                if(queue.length==0)
-                {
+                if(queue.length==0) {
                     return;
                 }
-                
-                return queue.shift();
-                                                
-                
+                return queue.shift();  
             }
-
             // Fetch initial table data
             var TableData = [];
             $('#tblProcessList tr').each(function(row, tr) {
@@ -468,10 +407,8 @@ $(document).ready(
                     "burstTime": parseInt($(tr).find('td:eq(2)').text())
                 }
             });
-
             // Remove table header row
             TableData.splice(0, 1);
-            
             // Reset burst time from original input table.
             TableData.forEach(pInTable => {
                 completedList.forEach(pInCompleted => {
@@ -482,7 +419,6 @@ $(document).ready(
                     }
                 });
             });
-
             // Bind table data
             $.each(completedList, function(key, process){
                 $('#tblResults > tbody:last-child').append(
@@ -496,135 +432,90 @@ $(document).ready(
                     </tr>`
                 );
             });
-                
             // Get average
             var totalTurnaroundTime = 0;
             var totalWaitingTime = 0;
             var maxCompletedTime = 0;
-
             $.each(completedList, function(key, process){
                 if (process.completedTime > maxCompletedTime) {
                     maxCompletedTime = process.completedTime;
                 }
-                // console.log(process.waitingTime);
                 totalTurnaroundTime = totalTurnaroundTime + process.turnAroundTime;
                 totalWaitingTime = totalWaitingTime + process.waitingTime;
             });
-            // console.log(totalWaitingTime,completedList.length);
-            // const TAT = document.getElementById('avgTurnaroundTime');
-            
-            // const waiting_time = document.getElementById('avgWaitingTime');
-            
-            // const throughput = document.getElementById('throughput');
-            
-            // TAT.innerHTML= totalTurnaroundTime / completedList.length ;
-            
-            // waiting_time.innerHTML =totalWaitingTime / completedList.length;
-            
-            // throughput.innerHTML=completedList.length / maxCompletedTime ;
-
             $('#avgTurnaroundTime').val( totalTurnaroundTime / completedList.length );
             $('#avgWaitingTime').val( totalWaitingTime / completedList.length);
             $('#throughput').val(completedList.length / maxCompletedTime);
             processList=completedList;
             filldata();
-            
         }
-        //////////////////////////////////////chart code ////////////////////////////////////////////////////////
+
+        ///////////////     chart code      /////////////////
         function getDate(sec) {
             return (new Date(0, 0, 0, 0, sec / 60, sec % 60));
         }
         let ganttChartData=[];
         let timelineChartData=[];
-        
-        function filldata(){
+        function filldata() {
             ganttChartData=[];
             timelineChartData=[];
-           var element =  document.getElementById("gantt-chart-heading");
-           element.style.display = 'block';  
-           var element2 =  document.getElementById("timeline-chart-heading");
-           element2.style.display = 'block';  
-         
-        completedList1.forEach((element)=>{
+            var element =  document.getElementById("gantt-chart-heading");
+            element.style.display = 'block';  
+            var element2 =  document.getElementById("timeline-chart-heading");
+            element2.style.display = 'block';  
+            completedList1.forEach((element)=>{
+                ganttChartData.push ([
+                    "Time",
+                    element.id.toString(),
+                    "",
+                    getDate(element.start),
+                    getDate(element.end)
+                ])
+            });
+            completedList1.forEach((element) => {
+                timelineChartData.push([               
+                    element.id.toString(),
+                    "",
+                    getDate(element.start),
+                    getDate(element.end)
+                ])
+            });
+            google.charts.load("current", {packages:["timeline"]});
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var container = document.getElementById('gantt-chart');
+                var chart = new google.visualization.Timeline(container);
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn({ type: "string", id: "Gantt Chart" });
+                dataTable.addColumn({ type: "string", id: "Process" });
+                dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+                dataTable.addColumn({ type: 'date', id: 'Start' });
+                dataTable.addColumn({ type: 'date', id: 'End' });
+                dataTable.addRows(ganttChartData);
+                let timelineWidth = '100%';
+                var options = {
+                    width: timelineWidth,
+                };
+                chart.draw(dataTable, options);
+            }
 
-            ganttChartData.push([
-                "Time",
-                element.id.toString(),
-                "",
-                getDate(element.start),
-                getDate(element.end)
-            ])
-
-
-        });
-        completedList1.forEach((element)=>{
-
-            timelineChartData.push([
-                
-                element.id.toString(),
-                "",
-                getDate(element.start),
-                getDate(element.end)
-            ])
-
-
-        });
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-          var container = document.getElementById('gantt-chart');
-          var chart = new google.visualization.Timeline(container);
-          var dataTable = new google.visualization.DataTable();
-          
-          dataTable.addColumn({ type: "string", id: "Gantt Chart" });
-          dataTable.addColumn({ type: "string", id: "Process" });
-          dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-          dataTable.addColumn({ type: 'date', id: 'Start' });
-          dataTable.addColumn({ type: 'date', id: 'End' });
-        // console.log(ganttChartData);
-          dataTable.addRows(ganttChartData);
-        //   chart.draw(dataTable);
-          
-        let timelineWidth = '100%';
-        var options = {
-            width: timelineWidth,
-        };
-        chart.draw(dataTable, options);
+            // timeline
+            google.charts.load("current", {packages:["timeline"]});
+            google.charts.setOnLoadCallback(drawChart2);
+            function drawChart2() {
+                var container = document.getElementById('example4.2');
+                var chart = new google.visualization.Timeline(container);
+                var dataTable = new google.visualization.DataTable();
+                dataTable.addColumn({ type: 'string', id: 'id' });
+                dataTable.addColumn({type: 'string', id: 'style', role: 'style'  })
+                dataTable.addColumn({ type: 'date', id: 'Start' });
+                dataTable.addColumn({ type: 'date', id: 'End' });
+                dataTable.addRows(timelineChartData);
+                var options = {
+                    timeline: { colorByRowLabel: true },
+                };
+                chart.draw(dataTable, options);
+            }
         }
-
-
-    // timeline
-   
-    google.charts.load("current", {packages:["timeline"]});
-    google.charts.setOnLoadCallback(drawChart2);
-    function drawChart2() {
-  
-      var container = document.getElementById('example4.2');
-      var chart = new google.visualization.Timeline(container);
-      var dataTable = new google.visualization.DataTable();
-      ;
-      dataTable.addColumn({ type: 'string', id: 'id' });
-      
-      dataTable.addColumn({type: 'string', id: 'style', role: 'style'  })
-      dataTable.addColumn({ type: 'date', id: 'Start' });
-      dataTable.addColumn({ type: 'date', id: 'End' });
-      dataTable.addRows(timelineChartData);
-  
-      var options = {
-        timeline: { colorByRowLabel: true },
-        
-      };
-  
-      chart.draw(dataTable, options);
     }
-
-
-        }
-
-
-        ////////////////////////////////////////////chart code end//////////////////////////////////////////////////////////////
-
-
-    }
-    
 );

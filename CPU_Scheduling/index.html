@@ -11,47 +11,35 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="app.js" type="text/javascript"></script>
-    <!-- <script type="text/javascript"> </script> -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
-    <!-- <script src="script.js"></script> -->
 </head>
-<body>
+<body style="margin: 2rem;">
         <h1 class="heading">
             CPU Scheduling Simulator
         </h1>
     <div style="margin-left: 50px">
        <h2> Output: </h2>
        <h5> 1. waiting time for all process and total average waiting time </h5>
-        
        <h5> 2. Turn around time for all process and total average turn around time </h5>
-        
        <h5> 3. completed time for all process </h5>
-
        <h5> 4. Throughput of processes</h5>
-        
        <h5> 5. gantt-chart of processes</h5>
-       
        <h5> 6. timeline-chart of processes</h5>
-<hr>
+        <hr>
     </div>
     <div class="container">
-        
         <div class="row mb-5 pt-3" id="main">
             <div class="col-9 process-list-container">
                 <table class="table table-bordered" id="tblProcessList">
                     <thead>
                         <tr>
-                            
                             <th scope="col">Process ID</th>
                             <th scope="col">Arrival Time</th>
                             <th scope="col">Burst Time</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        
-                    </tbody>
+                    <tbody> </tbody>
                 </table>
                 <div class="row">
                     <div class="col">
@@ -127,18 +115,18 @@
             </div>
         </div>
     </div>
-    <br><br> <br><br> <br>  <br>
-<h1 id="gantt-chart-heading"  >Gantt Chart</h1>
-<div id="gantt-chart"></div>  
-<h1 id="timeline-chart-heading"  >Timeline Chart</h1>
-<div id="example4.2" style="height: 200px;"></div>
-    <footer class="page-footer bg-dark p-2 mt-5">     
-        <div class="footer-copyright text-center py-3">
-           <span style="color :white">
-               
-           </span>
+    <div class = "chartDiv">
+        <h1 id="gantt-chart-heading"  >Gantt Chart</h1>
+        <div id="gantt-chart"></div>  
+    </div>
+    <div class = "chartDiv">  
+        <h1 id="timeline-chart-heading"  >Timeline Chart</h1>
+        <div id="example4.2" style="height: 200px;"></div>
+    </div>
+    <footer class="page-footer">     
+        <div class="text-center">
+               Elegance
         </div>
-    
     </footer>
     
 </body>
