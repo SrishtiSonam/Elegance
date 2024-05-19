@@ -11,13 +11,22 @@
 
 <body style="background-color:rgb(183, 193, 194);">
     <header>
-        <p style="text-align: center; color:rgb(0, 0, 0);font-family: 'Times New Roman', Times, serif; font-size: xx-large;">Sorting Algotithem Visualizer</p>
+        <p id='heading' style="text-align: center; color:rgb(0, 0, 0);font-family: 'Times New Roman', Times, serif; font-size: xx-large;">Sorting Algotithem Visualizer</p>
         <nav>
             <div class="array-inputs">
                 <p>Array Size:</p>
-                <input id="a_size" type="range" min=10 max=70 step=1 value=20>
+                <input id="a_size" type="number" value=20 autofocus>
+            </div>
+            <div class="array-inputs">
                 <p>Algorithem Speed:</p>
-                <input id="a_speed" type="range" min=1 max=10 step=1 value=4>
+                <select id="a_speed">
+                    <option value="">--Please choose a speed--</option>
+                    <option value="verySlow"> Very Slow </option>
+                    <option value="slow"> Slow </option>
+                    <option value="normal"> Normal </option>
+                    <option value="fast"> Fast </option>
+                    <option value="veryFast"> Very Fast </option>
+                </select>
             </div>
             <div class="header_right">
                 <button class="btn-prop" id="a_generate">Generate New Array</button> 
@@ -25,6 +34,10 @@
         </nav>
     </header>
 
+    <div class="message">
+        <p></p>
+    </div>
+    
     <section>
         <div id="Info_Cont1"></div>
         <div id="array_container"></div>
